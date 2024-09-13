@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do List</h1>
+        <input type="text" id="taskInput" placeholder="Add a new task">
+        <button id="addTaskButton">Add Task</button>
+        <ul id="taskList"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #D8A5D7;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #6C3F87;
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+}
+
+.nav-btn {
+    background-color: #836FA9;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.todo-container {
+    background-color: #89CFF0;
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+h1 {
+    text-align: center;
+    color: #2E0854;
+}
+
+#taskInput {
+    width: 80%;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#addTaskBtn {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    background-color: #FFF;
+    padding: 10px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+}
+
+li.completed {
+    text-decoration: line-through;
+    color: grey;
+}
+
+button.edit-btn {
+    background-color: #FFC107;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+button.delete-btn {
+    background-color: #DC3545;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const addTaskButton = document.getElementById('addTaskButton');
+    const taskInput = document.getElementById('taskInput');
+    const taskList = document.getElementById('taskList');
+
+    function createTaskElement(taskText) {
+        const li = document.createElement('li');
+        li.className = 'task';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+
+        const text = document.createElement('span');
+        text.textContent = taskText;
+
+        const editButton = document.createElement('button');
+        editButton.className = 'edit';
+        editButton.textContent = 'Edit';
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'delete';
+        deleteButton.textContent = 'Delete';
+
+        editButton.addEventListener('click', () => {
+            const newTaskText = prompt('Edit task:', text.textContent);
+            if (newTaskText !== null) {
+                text.textContent = newTaskText;
+            }
+        });
+
+        deleteButton.addEventListener('click', () => {
+            taskList.removeChild(li);
+        });
+
+        li.appendChild(checkbox);
+        li.appendChild(text);
+        li.appendChild(editButton);
+        li.appendChild(deleteButton);
+
+        return li;
+    }
+
+    addTaskButton.addEventListener('click', () => {
+        const taskText = taskInput.value.trim();
+        if (taskText) {
+            const taskElement = createTaskElement(taskText);
+            taskList.appendChild(taskElement);
+            taskInput.value = '';
+        }
+    });
+
+    taskInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            addTaskButton.click();
+        }
+    });
+});
